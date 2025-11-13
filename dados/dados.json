@@ -21,15 +21,15 @@
             "id":3,
             "nome":"Leota Adebayo",
             "ator":"Danielle Brooks",
-            "status":"viva",
-            "habilidade":"espionagem",
+            "status":"vivo",
+            "habilidade":["espionagem"],
             "upvote":0
         },
         {
             "id":4,
             "nome":"Emilia Harcourt",
             "ator":"Jennifer Holland",
-            "status":"viva",
+            "status":"vivo",
             "habilidade":["assasina profissional", "lutadora habil"],
             "upvote":0
         },
@@ -38,7 +38,7 @@
             "nome":"John Economos",
             "ator":"Steve Agee",
             "status":"vivo",
-            "habilidade":"hacker",
+            "habilidade":["hacker"],
             "upvote":0
         }
     ]
