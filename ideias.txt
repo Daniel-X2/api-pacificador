@@ -1,5 +1,6 @@
 
-
+consigo talvez fazer um add_all no adicionar dados json 
+com aquele negocio de guardar informaçao em lista
 🟢 FÁCIL (implementa em minutos):
 
 Endpoint de estatísticas
