@@ -5,7 +5,7 @@
             "id":1,
             "nome":"Christopher Smith / Pacificador",
             "ator":"John Cena",
-            "status":"vivo",
+            "Vivo":true,
             "habilidade": ["Matador", "Especialista em qualquer tipo de arma"],
             "upvote":5
         },
@@ -13,7 +13,7 @@
             "id":2,
             "nome":"Adrian Chase / Vigilante",
             "ator":"Freddie Stroma",
-            "status":"morto",
+            "Vivo":false,
             "habilidade":["Matador", "Conhece tudo sobre aranhas"],
             "upvote":7
         },
@@ -21,7 +21,7 @@
             "id":3,
             "nome":"Leota Adebayo",
             "ator":"Danielle Brooks",
-            "status":"vivo",
+            "Vivo":true,
             "habilidade":["espionagem"],
             "upvote":3
         },
@@ -29,7 +29,7 @@
             "id":4,
             "nome":"Emilia Harcourt",
             "ator":"Jennifer Holland",
-            "status":"vivo",
+            "Vivo":true,
             "habilidade":["assasina profissional", "lutadora habil"],
             "upvote":9
         },
@@ -37,7 +37,7 @@
             "id":5,
             "nome":"John Economos",
             "ator":"Steve Agee",
-            "status":"vivo",
+            "Vivo":true,
             "habilidade":["hacker"],
             "upvote":15
         }

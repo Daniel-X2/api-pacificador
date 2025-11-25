@@ -13,5 +13,9 @@ class ErroNoBancoSql(Exception):
 class ErroNenhumResultado(Exception):
     def __init__(self,campo):
         super().__init__(f"Nenhum Resultado encontrado no campo {campo}")
-
-
+class ErroValidacao(Exception):
+    def __init__(self):
+        super().__init__("Erro de validaçao")
+class ErroSemParametros(Exception):
+    def __init__(self):
+        super().__init__("sem parametros")
