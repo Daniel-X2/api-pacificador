@@ -1,22 +1,21 @@
 from fastapi import FastAPI
 from fastapi import HTTPException
-from erros import *
+from Erros_personalizado.erros import *
 from service.service import ElencoService
 app=FastAPI()
 
-service=ElencoService()
+service=ElencoService().votar("adrian")
 
-
-##
-# aqui seria o controler 
-# #
 
 @app.get("/")
 def home():
     return "ola mano"
 @app.get("/elenco")
 def elenco():
-    return service.retornar_elenco()
+    try:
+        return service.retornar_elenco()
+    except ValorVazio:
+        raise HTTPException(status_code=404, detail="O valor retornado e vazio")
 @app.get("/busca/")
 def busca_com_filtro(status:bool=True,habilidade:str=None,mais_votado:bool=False):
     try:
@@ -24,44 +23,57 @@ def busca_com_filtro(status:bool=True,habilidade:str=None,mais_votado:bool=False
     except ErroNenhumResultado:
         raise HTTPException(status_code=404, detail="nenhum personagem encontrado com essas caracteristicas")
     except ErroValidacao:
-        raise HTTPException(status_code=404, detail="Erro ao validar os dados inseridos")
+        raise HTTPException(status_code=400, detail="Erro ao validar os dados inseridos")
     except ErroSemParametros:
-        raise HTTPException(status_code=404, detail="Nenhum parametro selecionado")
+        raise HTTPException(status_code=400, detail="Nenhum parametro selecionado")
     except ErroValorMinimo:
-        raise HTTPException(status_code=404, detail="o parametro habilidade nao tem o valor minimo")
+        raise HTTPException(status_code=400, detail="o parametro habilidade nao tem o valor minimo")
     return dados
 @app.get("/elenco/{ator}")
 def busca_ator(ator:str):
     try:
         
-        dados_ator=service.buscar_ator(nome=ator)
+        dados_ator=service.buscar_no_elenco(nome=ator,modo="ator")
 
         return dados_ator
     except ErroValorMinimo:
-        raise HTTPException(status_code=404, detail="Valor minimo de caracteres nao foram cumpridos")
+        raise HTTPException(status_code=400, detail="Valor minimo de caracteres nao foram cumpridos")
     except ErroValidacao:
-        raise HTTPException(status_code=404, detail="erro na validaçao dos dados inseridos")
+        raise HTTPException(status_code=400, detail="erro na validaçao dos dados inseridos")
     except ErroNenhumResultado:
         raise HTTPException(status_code=404, detail="ator nao enconstrado")
 @app.get("/personagem/{personagem}")
 def buscar_personagem(personagem:str):
     try:
-        dados_personagem=service.buscar_personagem(nome=personagem)
+        dados_personagem=service.buscar_no_elenco(nome=personagem,modo="personagem")
         
         return dados_personagem
     except ErroValorMinimo:
-        raise HTTPException(status_code=404, detail="Valor minimo de caracteres nao foram cumpridos")
+        raise HTTPException(status_code=400, detail="Valor minimo de caracteres nao foram cumpridos")
     except ErroNenhumResultado:
         raise HTTPException(status_code=404, detail="personagem nao enconstrado")
     except ErroValidacao:
-        raise HTTPException(status_code=404, detail="erro na validaçao dos dados inseridos")
+        raise HTTPException(status_code=400, detail="erro na validaçao dos dados inseridos")
 @app.post("/votar/{personagem}")
-def upvote(personagem):
+def upvote(personagem:str):
     try:
-        #voto=service(personagem)
+        service.votar(personagem)
         return "sucesso"
     except ErroNenhumResultado:
          raise HTTPException(status_code=404, detail="personagem não encontrado")
+
+@app.get("/ranking/")
+def ranking(top:int=3):
+    try:
+        return service.ranking(top)
     except ValorVazio:
-        raise  HTTPException(status_code=404, detail="personagem não encontrado")
+         raise HTTPException(status_code=404, detail="o Valor retornado e vazio")
+    except Exception as e:
+        print(f"erro no {e}")
+@app.get("/stats")
+def estatisticas():
+    try:
+        return service.stats()
+    except ValorVazio:
+         raise  HTTPException(status_code=404, detail="O valor retornado e vazio")
 #uvicorn main:app --reload

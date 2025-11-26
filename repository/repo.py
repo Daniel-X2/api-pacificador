@@ -1,7 +1,7 @@
-from sqlalchemy import update, select
+from sqlalchemy import update, select,func
 from sqlalchemy.orm import Session
-from banco import engine,Elenco
-
+from dados.banco import engine,Elenco
+import random
 class ElencoRepository():
 
     def __init__(self):
@@ -11,13 +11,13 @@ class ElencoRepository():
         smt = select(Elenco)
         return smt
 
-    def filtro_mais_votado(self,smt):  
+    def mais_votado(self,smt):  
         #smt = select(Elenco)
         smt = smt.order_by(Elenco.upvote.desc())
         return smt
     def filtro_status(self,status,smt):
         
-        smt = smt.filter(Elenco.Vivo == status)
+        smt = smt.filter(Elenco.vivo == status)
         return smt
     def filtro_habilidades(self,habilidade,smt):
         #smt = select(Elenco)
@@ -30,11 +30,29 @@ class ElencoRepository():
         with Session(engine) as session:
             return session.scalars(smt).first()   
     def update_voto(self,personagem):
-        smt = (update(Elenco).filter(Elenco.nome.ilike(f"{personagem}%")).values(upvote=Elenco.upvote + 1))
-        return smt
+        with Session(engine) as session:
+
+            smt = (update(Elenco).filter(Elenco.nome.ilike(f"{personagem}%")).values(upvote=Elenco.upvote + 1))
+            session.execute(smt)
+            session.commit()
+        
     def buscar_ator(self,nome,smt):
         smt = smt.filter(Elenco.ator.ilike(f"{nome}%"))
         return smt
     def buscar_personagem(self,nome,smt):
         smt = smt.filter(Elenco.nome.ilike(f"{nome}%"))
         return smt
+    def total_personagem(self):
+        with Session(engine) as session:
+            smt=select(func.count(Elenco.id))
+            total=session.execute(smt).scalars().first()
+            return total
+    def total_vivos_mortos(self,vivo:bool):
+         with Session(engine) as session:
+            smt=select(func.count(Elenco.vivo)).filter(Elenco.vivo==vivo)
+            total=session.execute(smt).scalars().first()
+            return total
+        
+            
+            
+                 

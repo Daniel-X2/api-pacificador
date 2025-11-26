@@ -1,8 +1,7 @@
 
 class ErroValorMinimo(Exception):
-    def __init__(self,campo:str,minimo:int,recebido:int):
-        
-        super().__init__(f"o {campo} nao alcança o valor minimo de {minimo} caracteres")
+    def __init__(self):    
+        super().__init__(f"o campo nao alcança o valor minimo de 3 caracteres")
     pass
 class ValorVazio(Exception):
     def __init__(self):

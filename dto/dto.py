@@ -1,22 +1,35 @@
 from pydantic import BaseModel,Field
 class ElencoDto(BaseModel):
-    Nome:str =Field(min_length=3)
+    nome:str =Field(min_length=3)
     ator:str = Field(min_length=3)
-    Vivo:bool
+    vivo:bool
     habilidades:list
     upvote:int
 
-def serializar_lista( dados_):
+def serializar_lista(dados):
         lista = list()
-        
-        for c in range(0, len(dados_)):
+        for c in dados:
             lista.append(
                 ElencoDto(
-                    Nome=dados_[c].nome,
-                    ator=dados_[c].ator,
-                    Vivo=dados_[c].Vivo,
-                    habilidades=dados_[c].habilidades,
-                    upvote=dados_[c].upvote
+                    nome=c.nome,
+                    ator=c.ator,
+                    vivo=c.vivo,
+                    habilidades=c.habilidades,
+                    upvote=c.upvote
                 ).model_dump()
                 )
         return lista
+def serializar_dict(dados):
+    dici = dict()
+    for n,c in enumerate(dados):
+        dici[f"{n+1}° lugar"]=(
+            ElencoDto(
+                    nome=c.nome,
+                    ator=c.ator,
+                    vivo=c.vivo,
+                    habilidades=c.habilidades,
+                    upvote=c.upvote
+                ).model_dump()
+                )
+        
+    return dici

@@ -1,9 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 import json
-from models import Elenco
-from models import Base
-from erros import *
+from modelos.models import Elenco
+from modelos.models import Base
+from Erros_personalizado.erros import *
 
 engine = create_engine("sqlite:///dados/banco.db")
 Base.metadata.create_all(engine)
@@ -20,7 +20,7 @@ def adicionar_dados_json():
                     dados_json=json.load(arquivo)
                     lista_dados=list()
                     for c,n in enumerate(dados_json["elenco"]):    
-                        dados=Elenco(nome=n["nome"],ator=n["ator"],Vivo=n["Vivo"],habilidades=n["habilidade"],upvote=n["upvote"])
+                        dados=Elenco(nome=n["nome"],ator=n["ator"],vivo=n["vivo"],habilidades=n["habilidade"],upvote=n["upvote"])
                         lista_dados.append(dados)
                     session.add_all(lista_dados)
                     session.commit()
@@ -28,3 +28,4 @@ def adicionar_dados_json():
                 raise ErroNoBancoSql(e)
     
 
+adicionar_dados_json()
