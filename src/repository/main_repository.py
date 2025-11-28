@@ -103,9 +103,9 @@ class ElencoRepository():
         """
         with Session(engine) as session:
             smt = (update(Elenco).filter(Elenco.nome.ilike(f"{personagem}%")).values(upvote=Elenco.upvote + 1))
-            session.execute(smt)
+            result=session.execute(smt)
             session.commit()
-        
+            return result.rowcount 
     def buscar_ator(self, nome, smt):
         """
         Filtra personagens pelo nome do ator (busca parcial).

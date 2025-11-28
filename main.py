@@ -4,7 +4,7 @@ from src.Erros_personalizado.erros import *
 from src.service.main_service import ElencoService
 from dados.banco import adicionar_dados_json
 from contextlib import asynccontextmanager
-
+from pydantic import constr
 
 
 
@@ -17,14 +17,16 @@ app = FastAPI(lifespan=lifespan)
 service = ElencoService()
 
 @app.get("/")
-def home() -> str:
+def home() -> dict:
     """
     Endpoint de teste da API.
     
     Returns:
         str: Mensagem de boas-vindas.
     """
-    return {"ola seja bem vindo "}
+    return {"message": "API Pacificador",
+        "version": "1.0",
+        "docs": "/docs"}
 
 @app.get("/elenco")
 def elenco() -> list:
@@ -84,7 +86,7 @@ def busca_com_filtro(vivo: bool = True, habilidade: str = None, mais_votado: boo
     return dados
 
 @app.get("/elenco/{ator}")
-def busca_ator(ator: str) -> dict:
+def busca_ator(ator:str) -> dict:
     """
     Busca informações completas de um ator específico.
     
@@ -163,8 +165,11 @@ def upvote(personagem: str) -> dict:
     try:
         if(len(personagem.strip())<3):
             raise ErroValorMinimo
-        service.votar(personagem)
-        return {"status": "sucesso"}
+        result=service.votar(personagem)
+        if(result==1):
+            return {"status": "sucesso"}
+        else:
+            return {"status": "falha"}
     except ErroNenhumResultado:
         raise HTTPException(status_code=404,
                             detail="personagem não encontrado")

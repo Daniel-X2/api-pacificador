@@ -127,8 +127,8 @@ class ElencoService():
         """
         if (len(nome) < 3):
             raise ErroValorMinimo
-        repository.update_voto(nome)
-
+        return repository.update_voto(nome)
+        
     def stats(self) -> dict:
         """
         Retorna estatísticas gerais do elenco e personagens.
